@@ -1,24 +1,32 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const TrafficLight = () => {
     const [ color, setColor] = useState("red");
-    
+    const [showPurple, setShowPurple] = useState(false);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+          if (color === 'red') {
+            setColor('yellow');
+          } else if (color === 'yellow') {
+            setColor('green');
+          } else if (color === 'green') {
+            setColor(showPurple ? 'purple' : 'red');
+          } else {
+            setColor('red');
+          }}, 5000);    
+        return () => clearInterval(interval);
+      }, [color, showPurple]);
 
     return (
-        <div>
+        <div className="container">
             <div className='trafficTop container d-flex justify-content-between flex-column container-black mt-5'></div>
-            <div className='container d-flex justify-content-between flex-column container-black rounded-3 py-3'> 
-            <div className={`redLight ${color=="red" ? "selected" : " "}`} onClick={()=>{
-                    setColor("red")
-                }}></div>
-                <div className={`yellowLight ${color=="yellow" ? "selected" : " "}`} onClick={()=>{
-                    setColor("yellow")
-                }}></div>
-                <div className={`greenLight ${color=="green" ? "selected" : " "}`} onClick={()=>{
-                    setColor("green")
-                }}></div>
-            </div>
+                <div className='container d-flex justify-content-between flex-column container-black rounded-3 py-3'> 
+                    <div className={`redLight ${color=="red" ? "selected" : " "}`} onClick={()=>{setColor("red")}}></div>
+                    <div className={`yellowLight ${color=="yellow" ? "selected" : " "}`} onClick={()=>{setColor("yellow")}}></div>
+                    <div className={`greenLight ${color=="green" ? "selected" : " "}`} onClick={()=>{setColor("green")}}></div>
+                </div>
         </div>
     );
 };
